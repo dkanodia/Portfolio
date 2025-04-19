@@ -1,10 +1,12 @@
 :root {
   --color-accent: oklch(65% 50% 0);
   --black: oklch(0% 0% 0);
+  --border-color: oklch(50% 10% 200 / 40%); /* Updated border color for dark mode */
 }
 
 html {
   accent-color: var(--color-accent);
+  color-scheme: light dark; /* Support automatic dark mode */
 }
 
 body {
@@ -13,11 +15,13 @@ body {
   max-width: 100ch;
   margin-inline: max(1em, (100% - 100ch) / 2);
   padding-inline: 1em;
+  background-color: canvas; /* Use system background color */
+  color: canvastext; /* Use system text color */
 }
 
 nav {
   display: flex;
-  border-bottom: 1px solid oklch(80% 3% 200);
+  border-bottom: 1px solid var(--border-color); /* Use the variable */
   margin-bottom: 1em;
 }
 
@@ -40,7 +44,7 @@ nav a.current {
 }
 
 nav a:hover {
-  background-color: oklch(from var(--color-accent) 95% 5% h);
+  background-color: color-mix(in oklch, var(--color-accent), canvas 85%); /* Updated hover color */
   border-bottom: 0.4em solid var(--color-accent);
 }
 
@@ -70,7 +74,7 @@ button {
   grid-column: 1 / -1;
 }
 
-.projects{
+.projects {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
   gap: 1em;
@@ -83,7 +87,7 @@ article {
   gap: 1em;
 }
 
-article h2{
+article h2 {
   margin: 0;
 }
 
@@ -97,13 +101,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .resume-page h1 {
-  color: oklch(0% 0 0);
+  color: canvastext; /* Use adaptive color */
   text-align: center;
 }
 
 .resume-page section {
   padding: 1.5em;
   border-radius: 1em;
+  background-color: canvas; /* Adapt to light/dark background */
 }
 
 .resume-page article {
@@ -114,6 +119,17 @@ h1, h2, h3, h4, h5, h6 {
 
 .resume-page h2 {
   font-size: 200%;
-  color: var(--black);
+  color: canvastext; /* Adaptive heading color */
 }
 
+/* Dark mode switch positioning */
+.color-scheme {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 80%;
+}
+
+.color-scheme select {
+  font: inherit;
+}
