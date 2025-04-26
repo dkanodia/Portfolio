@@ -125,11 +125,40 @@ h1, h2, h3, h4, h5, h6 {
 /* Dark mode switch positioning */
 .color-scheme {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  display: inline-flex; 
+  right: 5rem;
   font-size: 80%;
 }
 
+
 .color-scheme select {
   font: inherit;
+}
+
+#profile-stats {
+  margin-top: 1rem;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  max-width: 800px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+#profile-stats dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  text-align: center;
+  margin: 0;
+}
+
+#profile-stats dt {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+#profile-stats dd {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #007acc;
 }
