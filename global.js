@@ -3,7 +3,7 @@ console.log('IT’S ALIVE!');
 function $$(selector, context = document) {
     return Array.from(context.querySelectorAll(selector));
   }
-//checking
+
 // var navLinks = $$("nav a");
 
 // let currentLink = navLinks.find(
@@ -86,4 +86,73 @@ select.addEventListener('input', function (event) {
 if ("colorScheme" in localStorage) {
   setColorScheme(localStorage.colorScheme);
   select.value = localStorage.colorScheme;
+}
+
+export async function fetchJSON(url) {
+  try {
+    // Fetch the JSON file from the given URL
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch projects: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching or parsing JSON data:', error);
+  }
+}
+
+export function renderProjects(projects, containerElement, headingLevel = 'h2') {
+  // Validate containerElement
+  if (!(containerElement instanceof HTMLElement)) {
+    console.error('Invalid containerElement passed to renderProjects.');
+    return;
+  }
+
+  // Validate heading level (allow only h1–h6)
+  const validHeadings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+  if (!validHeadings.includes(headingLevel)) {
+    console.warn(`Invalid headingLevel "${headingLevel}". Defaulting to "h2".`);
+    headingLevel = 'h2';
+  }
+
+  // Select the element to display the project count and update it
+  const projectsTitle = document.querySelector('.projects-title');
+  if (projectsTitle) {
+    // Update the title to show the number of projects
+    projectsTitle.textContent = `${projects.length} Projects`;
+  }
+
+  // Clear existing content in the projects container
+  containerElement.innerHTML = '';
+
+  // Check for empty or missing project data
+  if (!Array.isArray(projects) || projects.length === 0) {
+    const message = document.createElement('p');
+    message.textContent = 'No projects available to display.';
+    containerElement.appendChild(message);
+    return;
+  }
+
+  // Render each project
+  projects.forEach(project => {
+    const article = document.createElement('article');
+
+    // Fallbacks for missing fields
+    const title = project.title || 'Untitled Project';
+    const image = project.image || 'default.png'; // replace with actual fallback image if needed
+    const description = project.description || 'No description provided.';
+
+    article.innerHTML = `
+      <${headingLevel}>${title}</${headingLevel}>
+      <img src="${image}" alt="${title}">
+      <p>${description}</p>
+    `;
+
+    containerElement.appendChild(article);
+  });
+}
+
+export async function fetchGitHubData(username) {
+  return fetchJSON(`https://api.github.com/users/${username}`);
 }
