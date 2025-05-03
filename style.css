@@ -178,81 +178,76 @@ h1, h2, h3, h4, h5, h6 {
   overflow: visible;
 }
 
-/* Styling for the container that holds the pie chart and legend */
 .container {
-  display: flex; /* Aligns items horizontally */
-  justify-content: space-between; /* Ensures space between the pie chart and legend */
-  gap: 2em; /* Adds space between pie chart and legend */
-  align-items: flex-start; /* Aligns items at the top of the container */
-  width: 100%; /* Ensures container uses all available width */
-  max-width: 1200px; /* Optional: Limits maximum width of container */
-  margin: 0 auto; /* Centers the container horizontally */
+  display: flex; 
+  justify-content: space-between;  
+  gap: 2em; 
+  align-items: flex-start; 
+  width: 100%; 
+  max-width: 1200px; 
+  margin: 0 auto; 
 }
 
-/* Styling for the pie chart (SVG) */
 #projects-plot {
-  flex: 1; /* Allows the pie chart to grow and take available space */
-  max-width: 50%; /* Optional: Sets a maximum width for the pie chart */
-  height: auto; /* Adjusts height according to the aspect ratio */
+  flex: 1; 
+  max-width: 50%;  
+  height: auto;  
 }
 
-/* Styling for the legend */
 .legend {
   list-style: none;
-  padding: 1em; /* Inner padding around the legend */
-  margin: 1em 0; /* Margin around the whole legend */
+  padding: 1em;
+  margin: 1em 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(9em, 1fr)); /* Auto layout with flexible columns */
-  gap: 1em; /* Larger gap between the legend items */
-  border: 1px solid #ccc; /* Light border around the legend */
-  border-radius: 8px; /* Rounded corners for the border */
-  background-color: #f9f9f9; /* Light background color for the legend */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow for depth */
-  flex:1 ;
+  grid-template-columns: repeat(auto-fill, minmax(9em, 1fr));
+  gap: 1em;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: canvas;        
+  color: canvastext;               
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex: 1;
 }
 
-
-/* Styling each legend item */
 .legend li {
   display: flex;
-  align-items: center; /* Vertically center align the swatch and text */
-  gap: 0.3em; /* Smaller gap between the swatch and label */
-  font-size: 14px; /* Adjust font size if necessary */
-  padding: 0.5em; /* Padding around each item */
-  border-radius: 5px; /* Rounded corners for each item */
-  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+  align-items: center;
+  gap: 0.3em;
+  font-size: 14px;
+  padding: 0.5em;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  background-color: transparent;
+  color: inherit;
 }
 
-/* Styling the swatch (the color block) */
+.legend li:hover {
+  background-color: color-mix(in oklch, canvastext 5%, canvas);  
+}
+
+.legend li em {
+  font-style: italic;
+  color: inherit; 
+}
+
 .legend li .swatch {
   display: inline-block;
   width: 20px;
   height: 20px;
-  aspect-ratio: 1 / 1; /* Makes it square */
-  background-color: var(--color); /* Background color set dynamically */
-  border-radius: 50%; /* Makes it a circle */
+  aspect-ratio: 1 / 1; 
+  background-color: var(--color); 
+  border-radius: 50%;  
 }
 
-/* Styling for legend text */
-.legend li em {
-  font-style: italic;
-  color: #555; /* Slightly grey color for readability */
-}
-
-/* Optional: Hover effect for legend items */
-.legend li:hover {
-  background-color: rgba(0, 0, 0, 0.05); /* Subtle background on hover */
-  border-radius: 5px;
-}
 
 .container {
-  display: flex; /* Aligns items horizontally */
-  justify-content: space-between; /* Ensures space between the pie chart and legend */
-  gap: 2em; /* Adds space between pie chart and legend */
-  align-items: flex-start; /* Aligns items at the top of the container */
-  width: 100%; /* Ensures container uses all available width */
-  max-width: 1200px; /* Optional: Limits maximum width of container */
-  margin: 0 auto; /* Centers the container horizontally */
+  display: flex; 
+  justify-content: space-between; 
+  gap: 2em;
+  align-items: flex-start; 
+  width: 100%; 
+  max-width: 1200px; 
+  margin: 0 auto; 
 }
 
 &:has(path:hover) {
