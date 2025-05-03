@@ -1,12 +1,12 @@
 :root {
   --color-accent: oklch(65% 50% 0);
   --black: oklch(0% 0% 0);
-  --border-color: oklch(50% 10% 200 / 40%); /* Updated border color for dark mode */
+  --border-color: oklch(50% 10% 200 / 40%);  
 }
 
 html {
   accent-color: var(--color-accent);
-  color-scheme: light dark; /* Support automatic dark mode */
+  color-scheme: light dark; 
 }
 
 body {
@@ -15,13 +15,13 @@ body {
   max-width: 100ch;
   margin-inline: max(1em, (100% - 100ch) / 2);
   padding-inline: 1em;
-  background-color: canvas; /* Use system background color */
-  color: canvastext; /* Use system text color */
+  background-color: canvas; 
+  color: canvastext;  
 }
 
 nav {
   display: flex;
-  border-bottom: 1px solid var(--border-color); /* Use the variable */
+  border-bottom: 1px solid var(--border-color); 
   margin-bottom: 1em;
 }
 
@@ -44,7 +44,7 @@ nav a.current {
 }
 
 nav a:hover {
-  background-color: color-mix(in oklch, var(--color-accent), canvas 85%); /* Updated hover color */
+  background-color: color-mix(in oklch, var(--color-accent), canvas 85%); 
   border-bottom: 0.4em solid var(--color-accent);
 }
 
@@ -101,14 +101,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .resume-page h1 {
-  color: canvastext; /* Use adaptive color */
+  color: canvastext; 
   text-align: center;
 }
 
 .resume-page section {
   padding: 1.5em;
   border-radius: 1em;
-  background-color: canvas; /* Adapt to light/dark background */
+  background-color: canvas; 
 }
 
 .resume-page article {
@@ -119,10 +119,9 @@ h1, h2, h3, h4, h5, h6 {
 
 .resume-page h2 {
   font-size: 200%;
-  color: canvastext; /* Adaptive heading color */
+  color: canvastext; 
 }
 
-/* Dark mode switch positioning */
 .color-scheme {
   position: absolute;
   display: inline-flex; 
@@ -161,4 +160,85 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
   font-size: 1.25rem;
   color: #007acc;
+}
+
+#projects-pie-plot {
+  max-width: 20em;
+  margin-block: 2em;
+
+  overflow: visible;
+}
+
+.legend {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9em, 1fr));
+  gap: 1em;
+  border: 1px solid #ccc;
+  padding: 1em;
+  margin-top: 1em;
+  list-style: none;
+  background-color: #fafafa;
+  border-radius: 0.5em;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: sans-serif;
+  font-size: 0.9em;
+}
+
+.legend-item .swatch {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  aspect-ratio: 1 / 1;
+  background-color: var(--color);
+  border-radius: 0.25em;
+  flex-shrink: 0;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start; 
+  gap: 2em;
+  justify-content: center;
+}
+
+
+.legend {
+  flex: 1; 
+  min-width: 12em;
+  margin-top: 6em;
+}
+
+.container svg {
+  flex: 1 1 0;
+  max-width: 20em;
+  width: 100%;
+  height: auto;
+}
+
+svg:has(path:hover) path:not(:hover) {
+  opacity: 0.5;
+}
+
+path {
+  transition: 300ms;
+  cursor: pointer;
+}
+
+.selected {
+  --color: oklch(60% 45% 0) !important;
+}
+
+.selected:is(path) {
+  fill: var(--color);
+}
+
+.selected:is(li) {
+  font-weight: bold;
+  color: var(--color);
 }
