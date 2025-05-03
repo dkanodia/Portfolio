@@ -9,25 +9,14 @@ let arc = arcGenerator({
 });
 
 d3.select('svg').append('path').attr('d', arc).attr('fill', 'red');
+
 const projects = await fetchJSON('../lib/projects.json');
+let currentProjects = projects; // This will track the filtered projects
 
-let rolledData = d3.rollups(
-  projects,
-  (v) => v.length,
-  (d) => d.year,
-);
-
-let data = rolledData.map(([year, count]) => {
-  return { value: count, label: year };
-});
-
-let sliceGenerator = d3.pie().value((d) => d.value);
-let arcData = sliceGenerator(data);
 let selectedIndex = -1;
-
-let total = 0;
 let query = '';
 let searchInput = document.querySelector('.searchBar');
+const projectsContainer = document.querySelector('.projects');
 let newSVG = d3.select('svg');
 newSVG.selectAll('path').remove();
 
@@ -63,30 +52,25 @@ function renderPieChart(projectsGiven) {
       .attr('fill', colors(idx))
       .on('click', () => {
         selectedIndex = selectedIndex === idx ? -1 : idx;
-  
+
         d3.select('svg')
           .selectAll('path')
-          .attr('class', (_, i) => (
-            i === selectedIndex ? 'selected' : ''
-          ));
-  
+          .attr('class', (_, i) => (i === selectedIndex ? 'selected' : ''));
+
         d3.select('.legend')
           .selectAll('li')
-          .attr('class', (_, i) => (
-            i === selectedIndex ? 'selected' : ''
-          ));
-  
+          .attr('class', (_, i) => (i === selectedIndex ? 'selected' : ''));
+
         // Filter projects based on selection
         if (selectedIndex === -1) {
-          renderProjects(projects, projectsContainer, 'h2');
+          renderProjects(currentProjects, projectsContainer, 'h2');
         } else {
           const selectedYear = newData[selectedIndex].label;
-          const filtered = projects.filter(p => p.year === selectedYear);
+          const filtered = currentProjects.filter(p => p.year === selectedYear);
           renderProjects(filtered, projectsContainer, 'h2');
         }
       });
   });
-  
 
   // Create new legend
   let legend = d3.select('.legend');
@@ -109,13 +93,18 @@ searchInput.addEventListener('input', (event) => {
     return values.includes(query.toLowerCase());
   });
 
+  // Update current filtered list
+  currentProjects = filteredProjects;
+
+  // Reset selection if a search occurs
+  selectedIndex = -1;
+
   // Render filtered projects and pie chart
   renderProjects(filteredProjects, projectsContainer, 'h2');
   renderPieChart(filteredProjects); // Update pie chart with filtered data
 });
 
 // Initial render
-const projectsContainer = document.querySelector('.projects');
 renderProjects(projects, projectsContainer, 'h2');
-renderPieChart(projects); // Render pie chart with the full data
-
+renderPieChart(projects);
+ 
