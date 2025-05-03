@@ -44,48 +44,46 @@ function renderPieChart(projectsGiven) {
       .attr('fill', colors(idx))
       .attr('data-index', idx)
       .on('click', function () {
-        selectedIndex = selectedIndex === idx ? -1 : idx;
-
-        svg.selectAll('path')
-          .attr('class', (_, i) => (i === selectedIndex ? 'selected' : ''));
-
-        legend.selectAll('li')
-          .attr('class', (_, i) => (i === selectedIndex ? 'selected' : ''));
-
-        if (selectedIndex === -1) {
-          renderProjects(projectsGiven, projectsContainer, 'h2');
-        } else {
-          const selectedYear = data[selectedIndex].label;
-          const filtered = projectsGiven.filter(p => p.year === selectedYear);
-          renderProjects(filtered, projectsContainer, 'h2');
-        }
+        toggleSelection(idx, data, projectsGiven);
       });
   });
 
   // Render legend
   data.forEach((d, idx) => {
-    legend.append('li')
+    const legendItem = legend.append('li')
       .attr('class', 'legend-item')
       .attr('style', `--color:${colors(idx)}`)
-      .html(`<span class="swatch"></span> ${d.label} <em>(${d.value})</em>`)
-      .on('click', () => {
-        selectedIndex = selectedIndex === idx ? -1 : idx;
+      .html(`<span class="swatch"></span> ${d.label} <em>(${d.value})</em>`);
 
-        svg.selectAll('path')
-          .attr('class', (_, i) => (i === selectedIndex ? 'selected' : ''));
+    legendItem.select('.swatch')
+      .style('background-color', colors(idx))
+      .style('visibility', 'visible'); // Ensure the swatch is visible
 
-        legend.selectAll('li')
-          .attr('class', (_, i) => (i === selectedIndex ? 'selected' : ''));
-
-        if (selectedIndex === -1) {
-          renderProjects(projectsGiven, projectsContainer, 'h2');
-        } else {
-          const selectedYear = data[selectedIndex].label;
-          const filtered = projectsGiven.filter(p => p.year === selectedYear);
-          renderProjects(filtered, projectsContainer, 'h2');
-        }
-      });
+    // Click event for legend item
+    legendItem.on('click', () => {
+      toggleSelection(idx, data, projectsGiven);
+    });
   });
+}
+
+// Function to handle selection toggling
+function toggleSelection(idx, data, projectsGiven) {
+  selectedIndex = selectedIndex === idx ? -1 : idx;
+
+  svg.selectAll('path')
+    .attr('class', (_, i) => (i === selectedIndex ? 'selected' : ''));
+
+  legend.selectAll('li')
+    .attr('class', (_, i) => (i === selectedIndex ? 'selected' : ''));
+
+  if (selectedIndex === -1) {
+    renderProjects(projectsGiven, projectsContainer, 'h2');
+  } else {
+    const selectedYear = data[selectedIndex].label;
+    const filtered = projectsGiven.filter(p => p.year === selectedYear);
+    renderProjects(filtered, projectsContainer, 'h2');
+    renderPieChart(projects); // Re-render pie chart with the filtered data
+  }
 }
 
 // Search filtering
@@ -99,3 +97,4 @@ searchInput.addEventListener('input', (event) => {
 // Initial render
 renderProjects(projects, projectsContainer, 'h2');
 renderPieChart(projects);
+

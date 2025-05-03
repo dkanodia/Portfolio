@@ -142,14 +142,11 @@ export function renderProjects(projects, containerElement, headingLevel = 'h2') 
     const title = project.title || 'Untitled Project';
     const image = project.image || 'default.png'; // replace with actual fallback image if needed
     const description = project.description || 'No description provided.';
-    const year = project.year || 'Unknown';
+
     article.innerHTML = `
       <${headingLevel}>${title}</${headingLevel}>
       <img src="${image}" alt="${title}">
-      <div >
       <p>${description}</p>
-      <p style = "font-family: Baskerville; font-variant-numeric: oldstyle-nums">c. ${year}</p>
-      </div>
     `;
 
     containerElement.appendChild(article);

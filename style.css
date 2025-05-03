@@ -124,11 +124,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .color-scheme {
   position: absolute;
-  display: inline-flex; 
-  right: 5rem;
+  top: 1rem;
+  right: 1rem;
   font-size: 80%;
 }
-
 
 .color-scheme select {
   font: inherit;
@@ -160,85 +159,4 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
   font-size: 1.25rem;
   color: #007acc;
-}
-
-#projects-pie-plot {
-  max-width: 20em;
-  margin-block: 2em;
-
-  overflow: visible;
-}
-
-.legend {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(9em, 1fr));
-  gap: 1em;
-  border: 1px solid #ccc;
-  padding: 1em;
-  margin-top: 1em;
-  list-style: none;
-  background-color: #fafafa;
-  border-radius: 0.5em;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-  font-family: sans-serif;
-  font-size: 0.9em;
-}
-
-.legend-item .swatch {
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  aspect-ratio: 1 / 1;
-  background-color: var(--color);
-  border-radius: 0.25em;
-  flex-shrink: 0;
-}
-
-.container {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start; 
-  gap: 2em;
-  justify-content: center;
-}
-
-
-.legend {
-  flex: 1; 
-  min-width: 12em;
-  margin-top: 6em;
-}
-
-.container svg {
-  flex: 1 1 0;
-  max-width: 20em;
-  width: 100%;
-  height: auto;
-}
-
-svg:has(path:hover) path:not(:hover) {
-  opacity: 0.5;
-}
-
-path {
-  transition: 300ms;
-  cursor: pointer;
-}
-
-.selected {
-  --color: oklch(60% 45% 0) !important;
-}
-
-.selected:is(path) {
-  fill: var(--color);
-}
-
-.selected:is(li) {
-  font-weight: bold;
-  color: var(--color);
 }
