@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../style.css">
     <script type="module" src="../global.js" ></script>
     <script type="module" src="main.js" ></script>
+    <script type="module" src="meta.js" ></script>
 
     <title>Meta</title>
 </head>
@@ -13,11 +14,24 @@
 
     <h1>Meta</h1>
     <h2>Summary</h2>
+
+    <div class="commit-slider-container">
+      <div class="commit-slider-row">
+        <label for="commit-progress" class="commit-slider-label">Show commits until:</label>
+        <input type="range" min="0" max="100" value="100" id="commit-progress" class="commit-slider" />
+      </div>
+      <div class="commit-time-wrapper">
+        <time id="commit-time-content" class="commit-time-content"></time>
+      </div>
+    </div>
+    
     <div id="stats"></div>
 
     <h2>Commits by time of day</h2>
-    <div id="chart"></div>
-
+    <div id="scrolly-1">
+      <div id="scatter-story"></div>
+        <div id="chart"></div>
+    </div>
     <dl id="commit-tooltip" class="info tooltip">
         <dt>Commit</dt>
         <dd>
@@ -39,6 +53,17 @@
       <p id="selection-count">No commits selected</p>
       <dl id="language-breakdown" class="stats"></dl>
 
-      
+      <dl id="files">
+        <!-- we want the following structure for each file:
+        <div>
+          <dt>
+            <code>{file.name}</code>
+          </dt>
+          <dd>
+            <div class="line"></div>
+          </dd>
+        </div>
+        -->
+      </dl>  
 </body>
 </html>
