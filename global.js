@@ -144,12 +144,14 @@ export function renderProjects(projects, containerElement, headingLevel = 'h2') 
     const image = project.image || 'default.png'; // replace with actual fallback image if needed
     const description = project.description || 'No description provided.';
     const year = project.year || "Unknown";
+    const url = project.url || "Unknown";
 
     article.innerHTML = `
       <${headingLevel}>${title}</${headingLevel}>
-      <img src="${image}" alt="${title}">
+      <img src="${image}" alt="${title}" width=200px;>
       <div style="font-variant-numeric: oldstyle-nums; font-family:Baskerville">
       <p>${description}</p>
+      <a href=${url}>Link to Project</a>
       <p>c. ${year}</p>
       </div>
     `;

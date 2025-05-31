@@ -70,5 +70,12 @@
         "image": "https://vis-society.github.io/labs/2/images/empty.svg",
         "description": "Tempore, eveniet minus velit, earum aperiam necessitatibus repellendus provident accusamus illum officiis doloribus, eum saepe est aut numquam distinctio pariatur natus totam repellat. Numquam nulla libero sapiente magnam nostrum ex.",
         "year": "2023"
+      },	
+      {
+        "title": "Cyclopath",
+        "image": "../images/Capture-2025-05-16-231505.png",
+        "description": "This interactive web-based visualization maps bike traffic patterns across Boston's bike-sharing stations. Using D3.js, it dynamically displays the balance between departures and arrivals at each station with color-coded circles and an intuitive legend. Hover tooltips provide detailed trip data, offering a clear, engaging view of station activity over time. The project combines thoughtful UI design with real-world transportation data to highlight urban mobility trends in a user-friendly way.",
+        "year": "2025",
+        "url": "https://dkanodia.github.io/Cyclopath/"
       }
     ]
