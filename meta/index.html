@@ -17,21 +17,23 @@
 
     <div class="commit-slider-container">
       <div class="commit-slider-row">
-        <label for="commit-progress" class="commit-slider-label">Show commits until:</label>
-        <input type="range" min="0" max="100" value="100" id="commit-progress" class="commit-slider" />
+        <input type="range" min="0" max="100" value="100" id="commit-progress" class="commit-slider" hidden/>
       </div>
       <div class="commit-time-wrapper">
-        <time id="commit-time-content" class="commit-time-content"></time>
+        <time id="commit-time-content" class="commit-time-content" hidden></time>
       </div>
     </div>
     
-    <div id="stats"></div>
 
     <h2>Commits by time of day</h2>
     <div id="scrolly-1">
       <div id="scatter-story"></div>
+      <div id="chart-stats">
+        <div id="stats"></div>
         <div id="chart"></div>
+      </div>
     </div>
+    
     <dl id="commit-tooltip" class="info tooltip">
         <dt>Commit</dt>
         <dd>
@@ -53,17 +55,22 @@
       <p id="selection-count">No commits selected</p>
       <dl id="language-breakdown" class="stats"></dl>
 
-      <dl id="files">
-        <!-- we want the following structure for each file:
-        <div>
-          <dt>
-            <code>{file.name}</code>
-          </dt>
-          <dd>
-            <div class="line"></div>
-          </dd>
-        </div>
-        -->
-      </dl>  
+      <div id="scrolly-2">
+        <dl id="files">
+          <!-- we want the following structure for each file:
+          <div>
+            <dt>
+              <code>{file.name}</code>
+            </dt>
+            <dd>
+              <div class="line"></div>
+            </dd>
+          </div>
+          -->
+        </dl>  
+        <div id="rank-story"></div>
+
+      </div>
+      
 </body>
 </html>
