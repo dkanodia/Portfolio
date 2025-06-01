@@ -262,8 +262,15 @@ function renderTooltipContent(commit) {
 
 function updateTooltipPosition(event) {
   const tooltip = document.getElementById('commit-tooltip');
-  tooltip.style.left = `${event.clientX + 10}px`;
-  tooltip.style.top = `${event.clientY + 10}px`;
+  // Find the offset of the chart container
+  const chartRect = document.getElementById('chart').getBoundingClientRect();
+  // Use page scroll position to correct for sticky/scrolling containers
+  const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+  // Position tooltip relative to the chart container
+  tooltip.style.left = `${event.clientX + scrollLeft + 10}px`;
+  tooltip.style.top = `${event.clientY+ scrollTop + 10}px`;
 }
 
 function createBrushSelector(svg, xScale, yScale) {
@@ -453,25 +460,51 @@ let filesContainer = d3
 
 // This code updates the div info
 filesContainer.select('dt > code').text((d) => d.name);
-filesContainer
-  .select('dd')
-  .selectAll('div')
-  .data((d) => d.lines)
-  .join('div')
-  .attr('class', 'loc')
-  .attr('style', (d) => `--color: ${colors(d.type)}`);
-
+filesContainer.each(function(fileData) {
+  d3.select(this).select('dd')
+    .selectAll('div.loc')
+    .data(fileData.lines)
+    .join(
+      enter => enter.append('div').attr('class', 'loc'),
+      update => update,
+      exit => exit.remove()
+    )
+    .attr('style', d => `--color: ${colors(d.type)}`);
+});
 
 updateScatterPlot(data, filteredCommits);
 UpdateCommitInfo(data, filteredCommits);
 }
 
-
 slider.addEventListener('input', onTimeSliderChange);
 
-onTimeSliderChange();
 
 d3.select('#scatter-story')
+  .selectAll('.step')
+  .data(commits)
+  .join('div')
+  .attr('class', 'step')
+  .html(
+    (d, i) => `
+		On ${d.datetime.toLocaleString('en', {
+      dateStyle: 'full',
+      timeStyle: 'short',
+    })},
+		I made <a href="${d.url}" target="_blank">${
+      i > 0 ? 'another glorious commit' : 'my first commit, and it was glorious'
+    }</a>.
+		I edited ${d.totalLines} lines across ${
+      d3.rollups(
+        d.lines,
+        (D) => D.length,
+        (d) => d.file,
+      ).length
+    } files.
+		Then I looked over all I had made, and I saw that it was very good.
+	`,
+  );
+
+  d3.select('#rank-story')
   .selectAll('.step')
   .data(commits)
   .join('div')
@@ -512,40 +545,78 @@ d3.select('#scatter-story')
     // Update visuals
     updateScatterPlot(data, filteredCommits);
     UpdateCommitInfo(data, filteredCommits);
-  
-    let lines = filteredCommits.flatMap((d) => d.lines);
-    let files = d3
-      .groups(lines, (d) => d.file)
-      .map(([name, lines]) => ({ name, lines }))
-      .sort((a, b) => b.lines.length - a.lines.length);
-  
-    let colors = d3.scaleOrdinal(d3.schemeTableau10);
-    let filesContainer = d3
-      .select('#files')
-      .selectAll('div')
-      .data(files, (d) => d.name)
-      .join((enter) =>
-        enter.append('div').call((div) => {
-          div.append('dt').append('code');
-          div.append('dd');
-        })
-      );
-  
-    filesContainer.select('dt > code').text((d) => d.name);
-    filesContainer
-      .select('dd')
-      .selectAll('div')
-      .data((d) => d.lines)
-      .join('div')
-      .attr('class', 'loc')
-      .attr('style', (d) => `--color: ${colors(d.type)}`);
   }
   
+ function onStepEnter2(response) {
+  const stepCommit = response.element.__data__;
+  const commitMaxTime = stepCommit.datetime;
+  const commitProgress = timeScale(commitMaxTime);
+  slider.value = commitProgress;
+
+  timeDisplay.textContent = commitMaxTime.toLocaleString(undefined, {
+    dateStyle: "long",
+    timeStyle: "short",
+  });
+
+  // Filter commits up to current step
+  const filteredCommits = commits.filter((d) => d.datetime <= commitMaxTime);
+
+  // Flatten all lines across filtered commits
+  const lines = filteredCommits.flatMap((d) => d.lines);
   
-  const scroller = scrollama();
-  scroller
+  // Group lines by file and sort descending by line count
+  const files = d3.groups(lines, (d) => d.file)
+    .map(([name, lines]) => ({ name, lines }))
+    .sort((a, b) => b.lines.length - a.lines.length);
+
+  const colors = d3.scaleOrdinal(d3.schemeTableau10);
+
+  // Bind file data
+  const filesContainer = d3.select('#files')
+    .selectAll('div.file')
+    .data(files, d => d.name)
+    .join(
+      enter => enter.append('div')
+        .attr('class', 'file')
+        .call(div => {
+          div.append('dt').append('code');
+          div.append('dd');
+        }),
+      update => update,
+      exit => exit.remove()
+    );
+
+  // Update file names
+  filesContainer.select('dt > code')
+    .text(d => d.name);
+
+  // For each file block, update its line-of-code children
+  filesContainer.each(function(fileData) {
+    d3.select(this).select('dd')
+      .selectAll('div.loc')
+      .data(fileData.lines)
+      .join(
+        enter => enter.append('div').attr('class', 'loc'),
+        update => update,
+        exit => exit.remove()
+      )
+      .attr('style', d => `--color: ${colors(d.type)}`);
+  });
+}
+
+  const scroller1 = scrollama();
+  scroller1
     .setup({
       container: '#scrolly-1',
       step: '#scrolly-1 .step',
     })
     .onStepEnter(onStepEnter);
+  
+  // Scrollama instance for #scrolly-2
+  const scroller2 = scrollama();
+  scroller2
+    .setup({
+      container: '#scrolly-2',
+      step: '#scrolly-2 .step',
+    })
+    .onStepEnter(onStepEnter2);
